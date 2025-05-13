@@ -1,0 +1,82 @@
+.clipviewer-container {
+    margin-top: 40px;
+  }
+  
+  .clip-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+    gap: 24px;
+    margin-top: 20px;
+  }
+  
+  .clip-card {
+    background-color: #ffffff;
+    border: 1px solid #cfdce7;
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+  }
+  
+  .clip-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 8px;
+  }
+  
+  .clip-time {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 12px;
+  }
+  
+  iframe {
+    width: 100%;
+    height: 200px;
+    border-radius: 8px;
+    border: none;
+  }
+  
+  /* Lecture input section */
+  .lecture-input-section {
+    margin-top: 30px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  
+  .lecture-input-section label {
+    font-weight: 500;
+    color: #444;
+  }
+  
+  .lecture-input-section input {
+    padding: 6px 10px;
+    font-size: 14px;
+    width: 80px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+  }
+  
+  .lecture-input-section button {
+    padding: 8px 14px;
+    font-size: 14px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .lecture-input-section button:hover {
+    background-color: #3f9a43;
+  }
+  
+  .no-clips {
+    color: #777;
+    font-style: italic;
+    margin-top: 10px;
+  }
+  

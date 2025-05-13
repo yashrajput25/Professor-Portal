@@ -1,0 +1,29 @@
+
+/* components/FileUploader.css */
+.file-uploader {
+border: 2px dashed #4a90e2;
+background-color: #f8faff;
+padding: 40px;
+text-align: center;
+border-radius: 12px;
+cursor: pointer;
+transition: background-color 0.3s, border-color 0.3s;
+margin-bottom: 24px;
+}
+
+.file-uploader:hover {
+background-color: #e6f0fb;
+border-color: #357ae8;
+}
+
+.upload-instruction {
+font-size: 18px;
+color: #333;
+margin-bottom: 8px;
+font-weight: 600;
+}
+
+.upload-note {
+font-size: 14px;
+color: #888;
+}
