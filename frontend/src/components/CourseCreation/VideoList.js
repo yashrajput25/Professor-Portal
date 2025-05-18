@@ -1,33 +1,4 @@
 
-// import React from "react";
-// import "./VideoList.css";
-
-// export default function VideoList({ videos, onSelectVideo, fileName }) {
-// return (
-// <div className="video-list-container">
-//     <h2>🎬 Videos in <span className="file-title">{fileName}</span></h2>
-//     {videos.length === 0 ? (
-//     <p className="no-videos">No videos found for this file.</p>
-//     ) : (
-//     <div className="video-grid">
-//         {videos.map((video) => (
-//         <div
-//             key={video._id}
-//             className="video-card"
-//             onClick={() => onSelectVideo(video)}
-//             title={video.youtubeurl}
-//         >
-//             <div className="video-icon">▶️</div>
-//             <div className="video-url">{video.youtubeurl}</div>
-//         </div>
-//         ))}
-//     </div>
-//     )}
-// </div>
-// );
-// }
-
-
 // components/VideoList.js
 import React, { useEffect, useState } from "react";
 import "./VideoList.css";

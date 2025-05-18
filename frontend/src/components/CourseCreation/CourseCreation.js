@@ -71,7 +71,8 @@ export default function CourseCreation() {
           description: "Generated via YouTube Splitter", // optional
           lectureNumber: lectureNum,
           videoNumber: i + 1,
-          url: video.youtubeurl,
+          url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`
+          ,
         };
   
         await axios.post(
@@ -88,6 +89,12 @@ export default function CourseCreation() {
     }
   };
   
+  function convertToSeconds(time) {
+    const parts = time.split(":").map(Number);
+    if (parts.length === 3) return parts[0] * 3600 + parts[1] * 60 + parts[2];
+    if (parts.length === 2) return parts[0] * 60 + parts[1];
+    return parts[0];
+  }
 
 
   // ##################################### COURSE CREATION ####################################
