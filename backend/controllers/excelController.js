@@ -3,6 +3,7 @@ const multer = require("multer");
 const xlsx = require("xlsx");
 const ExcelFile = require("../models/ExcelFiles");
 const Video = require("../models/Video");
+const Course = require("../models/Course");
 const authMiddleWare = require("../middleware/auth");
 
 
