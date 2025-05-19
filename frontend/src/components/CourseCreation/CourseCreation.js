@@ -71,6 +71,7 @@ export default function CourseCreation() {
           description: "Generated via YouTube Splitter", // optional
           lectureNumber: lectureNum,
           videoNumber: i + 1,
+          duration: calculateDuration(clip.startTime, clip.endTime), 
           url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`
           ,
         };
@@ -95,6 +96,19 @@ export default function CourseCreation() {
     if (parts.length === 2) return parts[0] * 60 + parts[1];
     return parts[0];
   }
+
+  
+  function calculateDuration(startTime, endTime) {
+    const start = convertToSeconds(startTime);
+    const end = convertToSeconds(endTime);
+    const durationSec = Math.max(0, end - start);
+  
+    const minutes = Math.floor(durationSec / 60);
+    const seconds = durationSec % 60;
+  
+    return `${minutes.toString().padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
+  }
+  
 
 
   // ##################################### COURSE CREATION ####################################
