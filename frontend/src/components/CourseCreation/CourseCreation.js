@@ -68,14 +68,17 @@ export default function CourseCreation() {
   
         const payload = {
           title: clip.title,
-          description: "Generated via YouTube Splitter", // optional
+          description: "NA", // optional
           lectureNumber: lectureNum,
           videoNumber: i + 1,
           duration: calculateDuration(clip.startTime, clip.endTime), 
-          url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`
-          ,
+          //url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`,
+          url: video.youtubeurl,  // just the clean base URL
+          startTime: convertToSeconds(clip.startTime),  // 👈 NEW
+          endTime: convertToSeconds(clip.endTime),
         };
-  
+
+        console.log("📤 Payload being sent:", payload);
         await axios.post(
           `http://localhost:3000/api/video/${courseId}`,
           payload,
