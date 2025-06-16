@@ -5,6 +5,7 @@ const ExcelFile = require("../models/ExcelFiles");
 const Video = require("../models/Video");
 const Course = require("../models/Course");
 const authMiddleWare = require("../middleware/auth");
+const SSF = require('ssf');
 
 
 exports.uploadExcel = async (req, res) => {
@@ -13,7 +14,7 @@ exports.uploadExcel = async (req, res) => {
     try{
         
         if(!req.file){
-            return res.status(400).json({error: "No file upload"});
+            return res.status(400).json({error: "No file uploaded"});
         }
         const newFile = new ExcelFile({
             filename : req.file.originalname,
@@ -23,7 +24,6 @@ exports.uploadExcel = async (req, res) => {
         await newFile.save();
 
         console.log("✅ Excel File Saved:", newFile);
-
 
         const workbook = xlsx.readFile(req.file.path);
         const sheet = workbook.Sheets[workbook.SheetNames[0]];
@@ -53,7 +53,6 @@ exports.uploadExcel = async (req, res) => {
                         console.log(`🎥 Linked video ${newVideo._id} to course ${course._id}`);
                         }
                     }
-  
                 }
                 currentVideoUrl = row[1];
                 timestamps = [];
@@ -61,8 +60,10 @@ exports.uploadExcel = async (req, res) => {
             }else if(currentVideoUrl && row[2] && row[3]){
                 timestamps.push({
                     title: row[1] || "Untitled Segment",
-                    startTime:row[2],
-                    endTime: row[3]
+                    startTime: SSF.format("hh:mm", row[2]),
+                    endTime: SSF.format("hh:mm", row[3]),   
+                    description: row[5] ? row[5].toString().trim() : "",
+                    lectureNumber: parseInt(row[0]) || 1
                 })
             }
         }
