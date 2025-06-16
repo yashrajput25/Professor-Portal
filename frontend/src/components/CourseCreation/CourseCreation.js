@@ -8,6 +8,8 @@ import FileUploader from "./FileUploader";
 import FileList from "./FileList";
 import VideoList from "./VideoList";
 import ClipViewer from "./ClipViewer";
+import { Link } from "react-router-dom";
+import "./CourseCreation.css";
 
 export default function CourseCreation() {
   const [files, setFiles] = useState([]);
@@ -68,8 +70,8 @@ export default function CourseCreation() {
   
         const payload = {
           title: clip.title,
-          description: "NA", // optional
-          lectureNumber: lectureNum,
+          description: clip.description || " ", 
+          lectureNumber: clip.lectureNumber || lectureNum, // use parsed number if available
           videoNumber: i + 1,
           duration: calculateDuration(clip.startTime, clip.endTime), 
           //url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`,
@@ -166,41 +168,50 @@ export default function CourseCreation() {
     }
   };
 
-  return (
-    <div>
-      <h1>Course creation</h1>
 
-      <FileUploader onUpload={handleUpload}/>
+    return (
+      <div className="course-page-wrapper">
+        {/* Top Navbar like Dashboard */}
+        <header className="cognitrix-header">
+          <div className="logo">Cognitrix</div>
+          <nav className="nav-links">
+            <Link to="/dashboard" className="nav-btn">Home</Link>
+            <Link to="/leaderboard" className="nav-btn">Leaderboard</Link>
+            <Link to="/logout" className="nav-btn">Logout</Link>
+          </nav>
+        </header>
+  
+        <div className="course-page-container">
+          <h1 className="course-title">📚 Course Creation</h1>
+  
+          <FileUploader onUpload={handleUpload} />
+  
+          <FileList
+            files={files}
+            onSelectFile={fetchVideos}
+            onCreateCourse={handleCreateCourse}
+          />
+  
+          {selectedFile && (
+            <VideoList
+              videos={videos}
+              fileName={selectedFile.filename}
+              onSelectVideo={fetchTimestamps}
+            />
+          )}
+  
+          {selectedVideo && (
+            <ClipViewer
+              selectedVideo={selectedVideo}
+              timestamps={timestamps}
+              lectureNumber={lectureNumber}
+              setLectureNumber={setLectureNumber}
+              onSend={handleSendToLecture}
+            />
+          )}
+        </div>
+      </div>
+    );
+  }
+  
 
-      {/* File List */}
-
-      <FileList
-      files = {files}
-      onSelectFile = {fetchVideos}
-      onCreateCourse = {handleCreateCourse}
-      />
-
-      {/* Video List */}
-
-      {selectedFile &&
-      (<VideoList
-      videos={videos}
-      fileName={selectedFile.filename}
-      onSelectVideo={fetchTimestamps}
-      />)
-      }
-
-      {/* Mini-Clips */}
-      {selectedVideo && (
-        <> <ClipViewer
-          selectedVideo={selectedVideo}
-          timestamps={timestamps}
-          lectureNumber={lectureNumber}
-          setLectureNumber={setLectureNumber}
-          onSend={handleSendToLecture}
-        />
-        </>
-      )}
-    </div>
-  );
-}
