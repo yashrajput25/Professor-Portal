@@ -31,9 +31,13 @@ export default function FileUploader({onUpload}){
         ref={fileInputRef}
         onChange={onUpload}
         style={{ display: "none" }}
-      />
-      <p className="upload-instruction">📤 Drag & drop your Excel file here or click to browse</p>
-      <p className="upload-note">Only `.xlsx` and `.xls` files are supported</p>
+    />
+
+    <p className="upload-instruction">
+        <span className="pulse-icon">📤</span> Drag & drop your Excel file or click to browse
+    </p>
+
+    <p className="upload-note">Only `.xlsx` and `.xls` files are supported</p>
         </div>
     )
 }
