@@ -5,7 +5,7 @@ import "./FileList.css";
 export default function FileList({ files, onSelectFile, onCreateCourse }) {
 return (
 <div className="file-list-container">
-    <h2>📁 Uploaded Excel Files</h2>
+    <h2>📁 Uploaded Courses / Excel Files</h2>
     {files.length === 0 ? (
     <p className="no-files">No files uploaded yet.</p>
     ) : (
@@ -23,10 +23,14 @@ return (
                 className="create-course-btn"
                 onClick={(e) => {
                 e.stopPropagation();
-                onCreateCourse();
+                if (!file.courseId) {
+                    onSelectFile(file); // optional, if needed
+                    onCreateCourse();
+                }
                 }}
+                disabled={!!file.courseId}
             >
-                ➕ Create Course
+                {file.courseId ? "✅ Course Created" : "➕ Create Course"}
             </button>
             </div>
         </div>
