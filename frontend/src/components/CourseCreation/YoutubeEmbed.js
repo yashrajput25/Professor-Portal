@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-
+import './YoutubeEmbed.css'
 export default function YouTubeEmbed({ videoUrl, startTime, endTime }) {
 const [isEmbeddable, setIsEmbeddable] = useState(true);
 const videoId = extractVideoId(videoUrl);
@@ -26,13 +26,20 @@ useEffect(() => {
 }, [embedUrl]);
 
 return isEmbeddable ? (
-    <iframe width="560" height="315" src={embedUrl} allowFullScreen></iframe>
-) : (
-    <p>
-    🚫 This video cannot be embedded. <br />
-    <a href={videoUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube</a>
-    </p>
-);
+    <iframe
+      className="youtube-embed"
+      src={embedUrl}
+      allowFullScreen
+    />
+  ) : (
+    <div className="youtube-fallback">
+      🚫 This video cannot be embedded.<br />
+      <a href={videoUrl} target="_blank" rel="noopener noreferrer">
+        Watch on YouTube
+      </a>
+    </div>
+  );
+  
 }
 
 function extractVideoId(url) {
