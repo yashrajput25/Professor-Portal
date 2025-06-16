@@ -6,6 +6,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "../css/Login.css"; // Import the CSS file
 import CourseCreation from "./CourseCreation/CourseCreation";
+import './LoginFrontend.css'
 
 
 export default function Login({setAuth}) {
@@ -40,7 +41,9 @@ export default function Login({setAuth}) {
 
   return (
     <div className="login-container">
-      <h1>Login</h1>
+<h1 className="login-title">Login</h1>
+<p className="login-subtitle">Professor</p>
+
       <form onSubmit={handleSubmit} className="login-form">
         <label>Email:</label>
         <input
