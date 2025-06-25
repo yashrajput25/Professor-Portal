@@ -108,3 +108,33 @@
   background-color: #ffa35a;
   box-shadow: 0 0 16px rgba(255, 146, 72, 0.6);
 }
+
+.send-button {
+  background-color: #3b82f6; /* Blue */
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  margin-top: 10px;
+}
+
+.send-button:hover {
+  background-color: #2563eb;
+}
+
+.send-button:disabled,
+.send-button.disabled {
+  background-color: #9ca3af; /* Gray */
+  color: #e5e7eb; /* Light text */
+  cursor: not-allowed;
+  opacity: 0.75;
+}
+
+.clips-disabled {
+  opacity: 0.6;
+  pointer-events: none;
+}

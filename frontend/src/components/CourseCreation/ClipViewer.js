@@ -17,7 +17,7 @@ return (
     {timestamps.length === 0 ? (
     <p className="no-clips">No timestamps found for this video.</p>
     ) : (
-    <div className="clip-grid">
+    <div className={`clip-grid ${selectedVideo.sharedToStudentPortal ? 'clips-disabled' : ''}`}>
         {timestamps.map((clip, index) => (
         <div key={index} className="clip-card">
             <h3 className="clip-title">{clip.title}</h3>
@@ -44,9 +44,17 @@ return (
         min={1}
         onChange={(e) => setLectureNumber(parseInt(e.target.value))}
     />
-    <button onClick={() => onSend(selectedVideo, lectureNumber)}>
+    {/* <button onClick={() => onSend(selectedVideo, lectureNumber)}>
         🚀 Send to Lecture
+    </button> */}
+    <button
+    onClick={() => onSend(selectedVideo, lectureNumber)}
+    disabled={selectedVideo.sharedToStudentPortal}
+    className={`send-button ${selectedVideo.sharedToStudentPortal ? 'disabled' : ''}`}
+    >
+    {selectedVideo.sharedToStudentPortal ? "✅ Already Shared" : "🚀 Send to Lecture"}
     </button>
+
     </div>
 </div>
 );
