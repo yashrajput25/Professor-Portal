@@ -49,6 +49,8 @@ export default function CourseCreation() {
       );
   
       alert("✅ Course created and linked to Excel file!");
+      fetchFiles();
+
     } catch (error) {
       console.error("❌ Error creating course:", error.response?.data || error.message);
       alert("Failed to create course. See console.");
@@ -56,6 +58,50 @@ export default function CourseCreation() {
   };
   
   
+
+  // const handleSendToLecture = async (video, lectureNum) => {
+  //   const courseId = selectedFile?.courseId;
+  //   if (!courseId) {
+  //     alert("❌ This Excel file is not linked to a course. Please create a course first.");
+  //     return;
+  //   }
+  
+  //   try {
+  //     for (let i = 0; i < timestamps.length; i++) {
+  //       const clip = timestamps[i];
+  
+  //       const payload = {
+  //         title: clip.title,
+  //         description: clip.description || " ", 
+  //         lectureNumber: clip.lectureNumber || lectureNum, // use parsed number if available
+  //         videoNumber: i + 1,
+  //         duration: calculateDuration(clip.startTime, clip.endTime), 
+  //         //url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`,
+  //         url: video.youtubeurl,  // just the clean base URL
+  //         startTime: convertToSeconds(clip.startTime),  // 👈 NEW
+  //         endTime: convertToSeconds(clip.endTime),
+  //       };
+
+  //       console.log("📤 Payload being sent:", payload);
+  //       await axios.post(
+  //         `http://localhost:3000/api/video/${courseId}`,
+  //         payload,
+  //         professorHeaders() // if required by Student Portal
+  //       );
+  //     }
+
+  //     await axios.patch(`http://localhost:5001/api/video/${video._id}/mark-shared`,
+  //       {}, 
+  //       authHeaders()
+  //     );
+  
+  //     alert("✅ All mini-clips sent to Student Portal!");
+
+  //   } catch (error) {
+  //     console.error("❌ Error sending videos:", error);
+  //     alert("❌ Failed to share clips. Check console for details.");
+  //   }
+  // };
 
   const handleSendToLecture = async (video, lectureNum) => {
     const courseId = selectedFile?.courseId;
@@ -65,35 +111,66 @@ export default function CourseCreation() {
     }
   
     try {
-      for (let i = 0; i < timestamps.length; i++) {
-        const clip = timestamps[i];
-  
+      const sendTasks = timestamps.map((clip, i) => {
         const payload = {
           title: clip.title,
-          description: clip.description || " ", 
-          lectureNumber: clip.lectureNumber || lectureNum, // use parsed number if available
+          description: clip.description || " ",
+          lectureNumber: clip.lectureNumber || lectureNum,
           videoNumber: i + 1,
-          duration: calculateDuration(clip.startTime, clip.endTime), 
-          //url:`${video.youtubeurl}?start=${convertToSeconds(clip.startTime)}&end=${convertToSeconds(clip.endTime)}`,
-          url: video.youtubeurl,  // just the clean base URL
-          startTime: convertToSeconds(clip.startTime),  // 👈 NEW
+          duration: calculateDuration(clip.startTime, clip.endTime),
+          url: video.youtubeurl,
+          startTime: convertToSeconds(clip.startTime),
           endTime: convertToSeconds(clip.endTime),
         };
-
+  
         console.log("📤 Payload being sent:", payload);
-        await axios.post(
+  
+        return axios.post(
           `http://localhost:3000/api/video/${courseId}`,
           payload,
-          professorHeaders() // if required by Student Portal
+          professorHeaders()
         );
-      }
+      });
   
-      alert("✅ All mini-clips sent to Student Portal!");
+      const results = await Promise.allSettled(sendTasks);
+  
+      results.forEach((result, idx) => {
+        if (result.status === "rejected") {
+          console.warn(`⚠️ Clip ${idx + 1} failed:`, result.reason);
+        }
+      });
+  
+      console.log("🎯 Finished sending all clips. Now marking as shared...");
+
+      try {
+        const patchRes = await axios.patch(
+          `http://localhost:5001/api/video/${video._id}/mark-shared`,
+          {},
+          authHeaders()
+        );
+        console.log("✅ Video marked as shared:", patchRes.data);
+      } catch (err) {
+        console.error("❌ Failed to mark video as shared:", err);
+      }
+      
+      // ✅ Continue regardless of mark-shared outcome
+      const updatedVideos = await getVideosFromFile(selectedFile._id);
+      setVideos([...updatedVideos.data]);
+
+      // 🔄 Update selectedVideo reference too
+const updatedSelected = updatedVideos.data.find(v => v._id === video._id);
+setSelectedVideo(updatedSelected);
+
+      
+      console.log("✅ Refresh complete. Showing success message.");
+      alert("✅ All mini-clips sent and video marked as shared!");
+  
     } catch (error) {
-      console.error("❌ Error sending videos:", error);
-      alert("❌ Failed to share clips. Check console for details.");
+      console.error("❌ Uncaught error:", error);
+      alert("❌ Something went wrong. See console.");
     }
   };
+  
   
   function convertToSeconds(time) {
     const parts = time.split(":").map(Number);
