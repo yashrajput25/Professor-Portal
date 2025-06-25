@@ -160,3 +160,23 @@ try {
     res.status(500).json({ error: "Database error" });
 }
 };
+
+
+exports.markVideoAsShared = async(req, res)=>{
+
+    try{
+        const { videoId } = req.params;
+        const video = await Video.findByIdAndUpdate( videoId,{sharedToStudentPortal: true}, {new: true} );
+        
+        if(!video){
+            return res.status(404).json({error: "Video not found"});
+        }
+
+        return res.json({ message: "Video marked as shared", video });
+
+    }catch(error){
+        console.error("❌ Error marking video as shared:", error);
+        res.status(500).json({ error: "Database error" });
+    }
+
+}
