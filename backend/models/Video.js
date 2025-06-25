@@ -15,6 +15,10 @@ const videoSchema = new mongoose.Schema({
         ref: "User",
         required: true,
     },
+    sharedToStudentPortal:{
+        type: Boolean,
+        default: false
+    }
 });
 
 module.exports = mongoose.model("Video", videoSchema)
