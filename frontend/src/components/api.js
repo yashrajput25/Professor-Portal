@@ -38,3 +38,4 @@ export const getVideosFromFile = async (fileId) => {
 export const getVideoTimestamps = async (videoId) => {
   return await axios.get(`${API_URL}/videos/${videoId}`, authHeaders());
 };
+
