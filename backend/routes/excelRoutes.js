@@ -4,7 +4,12 @@ const xlsx = require("xlsx");
 const ExcelFile = require("../models/ExcelFiles");
 const Video = require("../models/Video");
 const authMiddleWare = require("../middleware/auth");
-const { uploadExcel, getAllFiles, getVideosForFile, getVideoTimestamps, linkCourseToExcel } = require("../controllers/excelController");
+const { uploadExcel,
+    getAllFiles, 
+    getVideosForFile, 
+    getVideoTimestamps,
+    linkCourseToExcel,
+    markVideoAsShared } = require("../controllers/excelController");
 
 // ########################## ROUTES FOR COURSE CREATION #################################################
 
@@ -26,6 +31,7 @@ router.get("/videos/:videoId", authMiddleWare, getVideoTimestamps);
 
 router.patch("/files/:fileId/course", authMiddleWare, linkCourseToExcel);
 
+router.patch("/video/:videoId/mark-shared", authMiddleWare, markVideoAsShared);
 
 
 module.exports = router;
